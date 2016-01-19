@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meal_time_array">
+        <item>아침 breakfast</item>
+        <item>점심 lunch</item>
+        <item>저녁 dinner</item>
+        <item>기타 etc</item>
+    </string-array>
+</resources>
