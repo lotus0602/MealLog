@@ -1,4 +1,4 @@
-package com.n.meallog.fragment;
+package com.n.fragment;
 
 
 import android.database.Cursor;
@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.n.adapter.ShowMealGridAdapter;
 import com.n.meallog.R;
-import com.n.meallog.adapter.ShowMealGridAdapter;
+
 
 import java.util.ArrayList;
 

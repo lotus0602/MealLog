@@ -1,4 +1,4 @@
-package com.n.meallog.adapter;
+package com.n.adapter;
 
 import android.content.Context;
 import android.util.Log;

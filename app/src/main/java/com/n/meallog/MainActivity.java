@@ -15,14 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.n.meallog.fragment.InputMealFragment;
-import com.n.meallog.fragment.ShowMealFragment;
+import com.n.fragment.InputMealFragment;
+import com.n.fragment.ShowMealFragment;
+import com.n.fragment.StatisticsFragment;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +98,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_input_meal) {
             fragment = new InputMealFragment();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_statistics) {
+            fragment = new StatisticsFragment();
         }
 
         if (fragment != null) {

@@ -1,4 +1,4 @@
-package com.n.meallog.fragment;
+package com.n.fragment;
 
 
 import android.app.DatePickerDialog;
