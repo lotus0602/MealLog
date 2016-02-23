@@ -1,6 +1,5 @@
 package com.n.net;
 
-<<<<<<< HEAD
 import com.n.model.JoinResult;
 import com.n.model.LoginResult;
 
@@ -22,17 +21,4 @@ public interface LoginService {
     @FormUrlEncoded
     @POST("joinMember.mobile")
     Call<JoinResult> basicJoin(@FieldMap Map<String, String> userJoin);
-=======
-import com.n.model.User;
-
-import retrofit2.Call;
-import retrofit2.http.POST;
-
-/**
- * Created by Jnag on 2016-02-05.
- */
-public interface LoginService {
-    @POST("meallog.do")
-    Call<User> basicLogin();
->>>>>>> fad17f4d5895fb16ce9d42cfeb4731d81e7d4dd0
 }
