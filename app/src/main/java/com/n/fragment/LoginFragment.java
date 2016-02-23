@@ -14,17 +14,27 @@ import android.widget.Toast;
 import com.n.meallog.LoginActivity;
 import com.n.meallog.MainActivity;
 import com.n.meallog.R;
+<<<<<<< HEAD
 import com.n.model.LoginResult;
+=======
+import com.n.model.User;
+>>>>>>> fad17f4d5895fb16ce9d42cfeb4731d81e7d4dd0
 import com.n.net.LoginService;
 import com.n.net.ServiceGenerator;
 import com.n.view.LockableViewPager;
 
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+=======
+import java.io.IOException;
+
+import retrofit2.Call;
+>>>>>>> fad17f4d5895fb16ce9d42cfeb4731d81e7d4dd0
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId()) {
             case R.id.login_login_btn:
+<<<<<<< HEAD
                 LoginService loginService =
                         ServiceGenerator.createService(LoginService.class);
 
@@ -90,6 +101,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     }
                 });
 
+=======
+                LoginService loginService = ServiceGenerator.createService(LoginService.class, "aa", "aa");
+                Call<User> call = loginService.basicLogin();
+
+                try {
+                    User user = call.execute().body();
+                    Log.d("execute", "!!!!!!!!!!!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+                getActivity().finish();
+>>>>>>> fad17f4d5895fb16ce9d42cfeb4731d81e7d4dd0
                 break;
             case R.id.login_join_btn:
                 pager.setCurrentItem(1);
