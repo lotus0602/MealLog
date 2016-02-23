@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="meal_time_array">
+    <string-array name="meal_time">
         <item>아침 breakfast</item>
         <item>점심 lunch</item>
         <item>저녁 dinner</item>
         <item>기타 etc</item>
+    </string-array>
+
+    <string-array name="food_category">
+        <item>한식</item>
+        <item>중식</item>
+        <item>양식</item>
+        <item>기타</item>
     </string-array>
 </resources>

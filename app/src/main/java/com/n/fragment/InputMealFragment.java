@@ -1,14 +1,14 @@
 package com.n.fragment;
 
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,14 +28,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.n.meallog.R;
+import com.n.model.MealInfo;
+import com.n.net.MealInfoService;
+import com.n.net.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,9 +52,14 @@ public class InputMealFragment extends Fragment {
     private EditText foodName;
     private static TextView dateView;
     private ImageButton datePickerBtn;
+    private CheckBox share;
     private Spinner mealTimeSpinner;
+    private Spinner categorySpinner;
+    private EditText contents;
     private ImageView foodImage;
     private Button completeBtn;
+
+    private Uri photoUri;
 
     public InputMealFragment() {
         // Required empty public constructor
@@ -63,7 +74,10 @@ public class InputMealFragment extends Fragment {
         foodName = (EditText) v.findViewById(R.id.input_food_name);
         dateView = (TextView) v.findViewById(R.id.input_date_show);
         datePickerBtn = (ImageButton) v.findViewById(R.id.input_date_picker_btn);
+        share = (CheckBox) v.findViewById(R.id.input_share);
         mealTimeSpinner = (Spinner) v.findViewById(R.id.input_meal_time_spinner);
+        categorySpinner = (Spinner) v.findViewById(R.id.input_meal_category_spinner);
+        contents = (EditText) v.findViewById(R.id.input_meal_contents);
         foodImage = (ImageView) v.findViewById(R.id.input_food_imageview);
         completeBtn = (Button) v.findViewById(R.id.input_complete_btn);
 
@@ -95,26 +109,86 @@ public class InputMealFragment extends Fragment {
                 selectImage();
             }
         });
+
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealInfo info = new MealInfo(foodName.getText().toString(),
+                        dateView.getText().toString(),
+                        mealTimeSpinner.getSelectedItem().toString(),
+                        categorySpinner.getSelectedItem().toString(),
+                        contents.getText().toString(),
+                        share.isChecked());
+                Log.d("Upload!!!", "Idx : " + info.getIdx()
+                        + ", Username : " + info.getUsername()
+                        + ", Name : " + info.getName()
+                        + ", Category : " + info.getCategory()
+                        + ", Content : " + info.getContent()
+                        + ", Eatdate : " + info.getEatdate()
+                        + ", Wheneat : " + info.getWheneat()
+                        + ", Picpath : " + info.getPicpath()
+                        + ", Share : " + info.isShare());
+
+                File file = new File(getRealPathFromUri(photoUri));
+                Log.d("File path!!!", file.getPath());
+                RequestBody requestBody =
+                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+
+                MealInfoService mealInfoService =
+                        ServiceGenerator.createService(MealInfoService.class);
+                Call<String> call = mealInfoService.uploadMeal(requestBody, info);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.d("Response In Upload", "CODE : " + response.code());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("Failure In Upload!", t.getMessage());
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
+            photoUri = data.getData();
+            Log.d("Uri path!!!", photoUri.toString());
             if (requestCode == REQUEST_CAMERA) {
                 Picasso.with(getActivity())
-                        .load(data.getData())
+                        .load(photoUri)
                         .fit()
                         .centerCrop()
                         .into(foodImage);
             } else if (requestCode == SELECT_PHOTO) {
                 Picasso.with(getActivity())
-                        .load(data.getData())
+                        .load(photoUri)
                         .fit()
                         .centerCrop()
                         .into(foodImage);
             }
         }
+    }
+
+    public String getRealPathFromUri(Uri uri) {
+        String res = "";
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int colum_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                res = cursor.getString(colum_index);
+            }
+            cursor.close();
+        } else {
+            Log.d("Get Real Path!", "Cursor is null");
+            return uri.getPath();
+        }
+        return res;
     }
 
     private static void showDate(int year, int month, int day) {

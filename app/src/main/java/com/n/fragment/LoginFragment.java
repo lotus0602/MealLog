@@ -1,29 +1,41 @@
 package com.n.fragment;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.n.meallog.LoginActivity;
 import com.n.meallog.MainActivity;
 import com.n.meallog.R;
+import com.n.model.LoginResult;
+import com.n.net.LoginService;
+import com.n.net.ServiceGenerator;
 import com.n.view.LockableViewPager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener{
-
+    private EditText id;
+    private EditText pw;
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +45,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         Button login = (Button) v.findViewById(R.id.login_login_btn);
         Button join = (Button) v.findViewById(R.id.login_join_btn);
+        id = (EditText) v.findViewById(R.id.login_id);
+        pw = (EditText) v.findViewById(R.id.login_pw);
+
         login.setOnClickListener(this);
         join.setOnClickListener(this);
 
@@ -45,9 +60,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId()) {
             case R.id.login_login_btn:
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
-                getActivity().finish();
+                LoginService loginService =
+                        ServiceGenerator.createService(LoginService.class);
+
+                Map user = new HashMap();
+                user.put("userID", id.getText().toString());
+                user.put("userPW", pw.getText().toString());
+
+                Call<LoginResult> call = loginService.basicLogin(user);
+                call.enqueue(new Callback<LoginResult>() {
+                    @Override
+                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                        Log.d("Response In Login", "CODE : " + response.code());
+
+                        LoginResult loginResult = response.body();
+
+                        if (loginResult.getResult().equals("LOGIN_OK")) {
+                            Intent i = new Intent(getActivity(), MainActivity.class);
+                            startActivity(i);
+                            getActivity().finish();
+                        } else {
+                            Toast.makeText(getContext(), loginResult.getResult(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResult> call, Throwable t) {
+                        Log.e("Failure In Login", t.getMessage());
+                    }
+                });
+
                 break;
             case R.id.login_join_btn:
                 pager.setCurrentItem(1);

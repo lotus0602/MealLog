@@ -2,7 +2,6 @@ package com.n.meallog;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -16,7 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.n.fragment.InputMealFragment;
-import com.n.fragment.ShowMealFragment;
+import com.n.fragment.ShowMyMealFragment;
+import com.n.fragment.ShowSharedMealFragment;
 import com.n.fragment.StatisticsFragment;
 
 
@@ -50,8 +50,17 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-            switchFragment(new ShowMealFragment());
+            switchFragment(new ShowSharedMealFragment());
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferencesManager.getPreferences().edit()
+                .remove(SharedPreferencesManager.PREF_COOKIES)
+                .commit();
+
+        super.onDestroy();
     }
 
     @Override
@@ -92,10 +101,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
 
-        if (id == R.id.nav_recent_meal) {
-            fragment = new ShowMealFragment();
+        if (id == R.id.nav_shared_meal) {
+            fragment = new ShowSharedMealFragment();
         } else if (id == R.id.nav_my_meal) {
-
+            fragment = new ShowMyMealFragment();
         } else if (id == R.id.nav_input_meal) {
             fragment = new InputMealFragment();
         } else if (id == R.id.nav_statistics) {

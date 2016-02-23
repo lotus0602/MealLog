@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.n.meallog.R;
+import com.n.model.MealInfo;
+import com.n.net.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,16 +21,16 @@ import java.util.ArrayList;
  */
 public class ShowMealGridAdapter extends BaseAdapter{
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<MealInfo> infos;
 
     public ShowMealGridAdapter(Context c) {
         context = c;
-        list = new ArrayList<>();
+        infos = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return list == null ? 0 : list.size();
+        return infos == null ? 0 : infos.size();
     }
 
     @Override
@@ -59,12 +61,14 @@ public class ShowMealGridAdapter extends BaseAdapter{
         }
 
         Picasso.with(context)
-                .load("file://" + list.get(position))
+                .load(ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getPicpath())
                 .fit()
                 .centerCrop()
                 .into(viewHolder.thumbnail);
+        viewHolder.title.setText(infos.get(position).getName());
 
-        Log.d("IN getView!!!!!", position + " : " + list.get(position));
+        Log.d("IN getView!!!!!", position + " : "
+                + ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getPicpath());
 
         return convertView;
     }
@@ -74,7 +78,8 @@ public class ShowMealGridAdapter extends BaseAdapter{
         TextView title;
     }
 
-    public void setList(ArrayList thumbList) {
-        list = thumbList;
+    public void setInfos(ArrayList mealInfos) {
+        infos = mealInfos;
+        Log.d("In setInfos!!!!!", "SIZE : " + infos.size());
     }
 }

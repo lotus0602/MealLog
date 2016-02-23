@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_recent_meal"
+        <item android:id="@+id/nav_shared_meal"
             android:icon="@android:drawable/ic_menu_camera"
-            android:title="Recent Meal" />
+            android:title="Shared Meal" />
         <item android:id="@+id/nav_my_meal"
             android:icon="@android:drawable/ic_menu_gallery"
             android:title="My Meal" />
