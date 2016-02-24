@@ -21,8 +21,8 @@ public class ServiceGenerator {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient.addInterceptor(logging);
-        httpClient.addInterceptor(new AddCookiesInterceptor());
-        httpClient.addInterceptor(new ReceivedCookiesInterceptor());
+        httpClient.addInterceptor(new ReceivedCookiesInterceptor())
+                .addInterceptor(new AddCookiesInterceptor());
 
         Retrofit retrofit = builder.client(httpClient.build()).build();
 

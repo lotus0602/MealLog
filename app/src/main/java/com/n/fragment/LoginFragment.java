@@ -1,5 +1,6 @@
 package com.n.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 public class LoginFragment extends Fragment implements View.OnClickListener{
     private EditText id;
     private EditText pw;
+    private ProgressDialog dialog;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -57,11 +59,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        dialog = new ProgressDialog(getContext());
+    }
+
+    @Override
     public void onClick(View v) {
         LockableViewPager pager = ((LoginActivity)getActivity()).getViewPager();
 
         switch (v.getId()) {
             case R.id.login_login_btn:
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Login...");
+                dialog.show();
+
                 LoginService loginService =
                         ServiceGenerator.createService(LoginService.class);
 
@@ -74,9 +87,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                         Log.d("Response In Login", "CODE : " + response.code());
+                        dialog.dismiss();
 
                         LoginResult loginResult = response.body();
-
                         if (loginResult.getResult().equals("LOGIN_OK")) {
                             Intent i = new Intent(getActivity(), MainActivity.class);
                             startActivity(i);
@@ -88,6 +101,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
                     @Override
                     public void onFailure(Call<LoginResult> call, Throwable t) {
+                        dialog.dismiss();
                         Log.e("Failure In Login", t.getMessage());
                     }
                 });

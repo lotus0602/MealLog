@@ -36,7 +36,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Calendar;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -131,8 +133,14 @@ public class InputMealFragment extends Fragment {
 
                 File file = new File(getRealPathFromUri(photoUri));
                 Log.d("File path!!!", file.getPath());
-                RequestBody requestBody =
-                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+//                RequestBody requestBody =
+//                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"image.jpg\""),
+                                RequestBody.create(MediaType.parse("image/jpeg"), file))
+                        .build();
 
                 MealInfoService mealInfoService =
                         ServiceGenerator.createService(MealInfoService.class);
