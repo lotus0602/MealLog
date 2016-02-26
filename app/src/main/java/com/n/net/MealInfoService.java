@@ -3,8 +3,10 @@ package com.n.net;
 import com.n.model.MealInfo;
 import com.n.model.MealList;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -19,8 +21,10 @@ public interface MealInfoService {
     @POST("meal/shareMealList.mobile")
     Call<MealList> getSharedMealList();
 
-    @Multipart
+//    @Multipart
     @POST("meal/mealUploadList.mobile")
-    Call<String> uploadMeal(@Part("image") RequestBody image,
-                            @Part("meal") MealInfo info);
+    Call<String> uploadMeal( @Body MultipartBody requestBody);
+
+//    Call<String> uploadMeal(@Part("image") RequestBody image,
+//                            @Part("meal") MealInfo info);
 }
