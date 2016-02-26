@@ -27,5 +27,5 @@ public interface MealInfoService {
 
 //    @Multipart
 //    @POST("meal/mealUploadList.mobile")
-//    Call<String> uploadMeal(@Part("file") RequestBody image, @Part("meal") MealInfo info);
+//    Call<String> uploadMeal(@Part("File") RequestBody image, @Part("meal") MealInfo info);
 }
