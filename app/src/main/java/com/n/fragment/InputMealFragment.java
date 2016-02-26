@@ -132,18 +132,25 @@ public class InputMealFragment extends Fragment {
 
                 File file = new File(getRealPathFromUri(photoUri));
                 Log.d("File path!!!", file.getPath());
-//                RequestBody requestBody =
-//                        RequestBody.create(MediaType.parse("image/jpeg"), file);
-                RequestBody requestBody = new MultipartBody.Builder()
+                RequestBody requestBody1 =
+                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+
+
+                MultipartBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addPart(
-                                Headers.of("Content-Disposition", "form-data; name=\"image.jpg\""),
-                                RequestBody.create(MediaType.parse("image/jpeg"), file))
+                        .addFormDataPart("File",file.getName(),requestBody1)
+                        .addFormDataPart("NAME", foodName.getText().toString())
+                        .addFormDataPart("EATDATE",dateView.getText().toString())
+                        .addFormDataPart("WHENEAT",mealTimeSpinner.getSelectedItem().toString())
+                        .addFormDataPart("CATEGORY", categorySpinner.getSelectedItem().toString())
+                        .addFormDataPart("CONTENT",contents.getText().toString())
+                        .addFormDataPart("SHARE",String.valueOf(share.isChecked()))
                         .build();
+
 
                 MealInfoService mealInfoService =
                         ServiceGenerator.createService(MealInfoService.class);
-                Call<String> call = mealInfoService.uploadMeal(requestBody, info);
+                Call<String> call = mealInfoService.uploadMeal(requestBody);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
