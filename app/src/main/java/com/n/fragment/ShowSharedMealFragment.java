@@ -1,14 +1,17 @@
 package com.n.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.n.adapter.ShowMealGridAdapter;
+import com.n.meallog.MealDetailActivity;
 import com.n.meallog.R;
 import com.n.model.MealInfo;
 import com.n.model.MealList;
@@ -46,11 +49,18 @@ public class ShowSharedMealFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mealList = new MealList();
+        gridAdapter = new ShowMealGridAdapter(getContext());
+
         getSharedMealList();
         Log.d("After getMyMealList!!!!", "SIZE : " + mealList.getInfos().size());
 
-        gridAdapter = new ShowMealGridAdapter(getView().getContext());
-
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), MealDetailActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getSharedMealList() {

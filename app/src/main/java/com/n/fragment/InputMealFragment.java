@@ -133,23 +133,49 @@ public class InputMealFragment extends Fragment {
 
                 File file = new File(getRealPathFromUri(photoUri));
                 Log.d("File path!!!", file.getPath());
-                RequestBody requestBody1 =
-                        RequestBody.create(MediaType.parse("image/jpeg"), file);
 
-                String test = "한글내용";
+//                RequestBody requestBody =
+//                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+
+
+//                RequestBody requestBody = new MultipartBody.Builder()
+//                        .setType(MultipartBody.FORM)
+//                        .addPart(
+//                                Headers.of("Content-Disposition", "form-data; name=\"image.jpg\""),
+//                                RequestBody.create(MediaType.parse("image/jpeg"), file))
+//                        .build();
+
                 MultipartBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addFormDataPart("File", file.getName(), requestBody1)
-                       // .addFormDataPart("한글",URLEncoder.encode("한글테스트", "UTF-8"))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"CONTENT\""), RequestBody.create(MediaType.parse("text"), contents.getText().toString()))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"NAME\""), RequestBody.create(MediaType.parse("text"), foodName.getText().toString()))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"EATDATE\""), RequestBody.create(MediaType.parse("text"), dateView.getText().toString()))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"WHENEAT\""), RequestBody.create(MediaType.parse("text"), mealTimeSpinner.getSelectedItem().toString()))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"CATEGORY\""), RequestBody.create(MediaType.parse("text"), categorySpinner.getSelectedItem().toString()))
-                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"SHARE\""), RequestBody.create(MediaType.parse("text"), String.valueOf(share.isChecked())))
+                        .addFormDataPart("File", file.getName(),
+                                RequestBody.create(MediaType.parse("image/jpeg"), file))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"CONTENT\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        contents.getText().toString()))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"NAME\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        foodName.getText().toString()))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"EATDATE\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        dateView.getText().toString()))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"WHENEAT\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        mealTimeSpinner.getSelectedItem().toString()))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"CATEGORY\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        categorySpinner.getSelectedItem().toString()))
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"SHARE\""),
+                                RequestBody.create(MediaType.parse("text"),
+                                        String.valueOf(share.isChecked())))
                         .build();
 
-                requestBody.contentType().charset(Charset.forName("UTF-8"));
+//                requestBody.contentType().charset(Charset.forName("UTF-8"));
 
                 MealInfoService mealInfoService =
                         ServiceGenerator.createService(MealInfoService.class);

@@ -16,8 +16,7 @@ import com.n.meallog.LoginActivity;
 import com.n.meallog.MainActivity;
 import com.n.meallog.R;
 
-import com.n.model.LoginResult;
-
+import com.n.model.RequestResult;
 import com.n.net.LoginService;
 import com.n.net.ServiceGenerator;
 import com.n.view.LockableViewPager;
@@ -82,29 +81,30 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 user.put("userID", id.getText().toString());
                 user.put("userPW", pw.getText().toString());
 
-                Call<LoginResult> call = loginService.basicLogin(user);
-                call.enqueue(new Callback<LoginResult>() {
+                Call<RequestResult> call = loginService.basicLogin(user);
+                call.enqueue(new Callback<RequestResult>() {
                     @Override
-                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                    public void onResponse(Call<RequestResult> call, Response<RequestResult> response) {
                         Log.d("Response In Login", "CODE : " + response.code());
                         dialog.dismiss();
 
-                        LoginResult loginResult = response.body();
-                        if (loginResult.getResult().equals("LOGIN_OK")) {
+                        RequestResult result = response.body();
+                        if (result.getResult().equals("LOGIN_OK")) {
                             Intent i = new Intent(getActivity(), MainActivity.class);
                             startActivity(i);
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getContext(), loginResult.getResult(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<LoginResult> call, Throwable t) {
+                    public void onFailure(Call<RequestResult> call, Throwable t) {
                         dialog.dismiss();
                         Log.e("Failure In Login", t.getMessage());
                     }
                 });
+
                 break;
             case R.id.login_join_btn:
                 pager.setCurrentItem(1);

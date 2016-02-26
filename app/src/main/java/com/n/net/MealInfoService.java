@@ -21,11 +21,10 @@ public interface MealInfoService {
     @POST("meal/shareMealList.mobile")
     Call<MealList> getSharedMealList();
 
-
+//    @Multipart
     @POST("meal/mealUploadList.mobile")
     Call<String> uploadMeal( @Body MultipartBody requestBody);
 
-//    @Multipart
-//    @POST("meal/mealUploadList.mobile")
-//    Call<String> uploadMeal(@Part("File") RequestBody image, @Part("meal") MealInfo info);
+//    Call<String> uploadMeal(@Part("image") RequestBody image,
+//                            @Part("meal") MealInfo info);
 }

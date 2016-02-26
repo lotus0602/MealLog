@@ -1,7 +1,6 @@
 package com.n.net;
 
-import com.n.model.JoinResult;
-import com.n.model.LoginResult;
+import com.n.model.RequestResult;
 
 import java.util.Map;
 
@@ -16,9 +15,9 @@ import retrofit2.http.POST;
 public interface LoginService {
     @FormUrlEncoded
     @POST("meallogin.mobile")
-    Call<LoginResult> basicLogin(@FieldMap Map<String, String> user);
+    Call<RequestResult> basicLogin(@FieldMap Map<String, String> user);
 
     @FormUrlEncoded
     @POST("joinMember.mobile")
-    Call<JoinResult> basicJoin(@FieldMap Map<String, String> userJoin);
+    Call<RequestResult> basicJoin(@FieldMap Map<String, String> userJoin);
 }
