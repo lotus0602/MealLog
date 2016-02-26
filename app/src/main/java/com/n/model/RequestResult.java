@@ -1,12 +1,12 @@
 package com.n.model;
 
 /**
- * Created by N on 2016-02-23.
+ * Created by N on 2016-02-26.
  */
-public class LoginResult {
+public class RequestResult {
     private String result;
 
-    public LoginResult() {}
+    public RequestResult() {}
 
     public String getResult() { return this.result; }
 }

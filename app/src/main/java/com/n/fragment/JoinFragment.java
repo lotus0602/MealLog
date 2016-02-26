@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.n.meallog.LoginActivity;
 import com.n.meallog.R;
-import com.n.model.JoinResult;
+import com.n.model.RequestResult;
 import com.n.net.LoginService;
 import com.n.net.ServiceGenerator;
 import com.n.view.LockableViewPager;
@@ -70,26 +70,26 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
                 userJoin.put("signUp_psw", pw.getText().toString());
                 userJoin.put("signUp_pswCheck", pw_again.getText().toString());
 
-                Call<JoinResult> call = loginService.basicJoin(userJoin);
-                call.enqueue(new Callback<JoinResult>() {
+                Call<RequestResult> call = loginService.basicJoin(userJoin);
+                call.enqueue(new Callback<RequestResult>() {
                     @Override
-                    public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
+                    public void onResponse(Call<RequestResult> call, Response<RequestResult> response) {
                         Log.d("Response In Join", "CODE : " + response.code());
 
-                        JoinResult joinResult = response.body();
-
-                        if (joinResult.getResult().equals("JOIN_OK")) {
+                        RequestResult result = response.body();
+                        if (result.getResult().equals("JOIN_OK")) {
                             pager.setCurrentItem(0);
                         } else {
-                            Toast.makeText(getContext(), joinResult.getResult(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<JoinResult> call, Throwable t) {
+                    public void onFailure(Call<RequestResult> call, Throwable t) {
                         Log.e("Failure In Join", t.getMessage());
                     }
                 });
+
                 break;
             case R.id.join_cancel:
                 pager.setCurrentItem(0);

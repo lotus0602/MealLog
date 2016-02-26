@@ -132,14 +132,14 @@ public class InputMealFragment extends Fragment {
 
                 File file = new File(getRealPathFromUri(photoUri));
                 Log.d("File path!!!", file.getPath());
-//                RequestBody requestBody =
-//                        RequestBody.create(MediaType.parse("image/jpeg"), file);
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addPart(
-                                Headers.of("Content-Disposition", "form-data; name=\"image.jpg\""),
-                                RequestBody.create(MediaType.parse("image/jpeg"), file))
-                        .build();
+                RequestBody requestBody =
+                        RequestBody.create(MediaType.parse("image/jpeg"), file);
+//                RequestBody requestBody = new MultipartBody.Builder()
+//                        .setType(MultipartBody.FORM)
+//                        .addPart(
+//                                Headers.of("Content-Disposition", "form-data; name=\"image.jpg\""),
+//                                RequestBody.create(MediaType.parse("image/jpeg"), file))
+//                        .build();
 
                 MealInfoService mealInfoService =
                         ServiceGenerator.createService(MealInfoService.class);

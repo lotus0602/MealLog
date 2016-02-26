@@ -46,10 +46,11 @@ public class ShowMyMealFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mealList = new MealList();
+        gridAdapter = new ShowMealGridAdapter(getContext());
+
         getMyMealList();
         Log.d("After getMyMealList!!!!", "SIZE : " + mealList.getInfos().size());
 
-        gridAdapter = new ShowMealGridAdapter(getView().getContext());
     }
 
     private void getMyMealList(){
