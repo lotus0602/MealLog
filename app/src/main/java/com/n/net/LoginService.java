@@ -5,6 +5,7 @@ import com.n.model.RequestResult;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -20,4 +21,8 @@ public interface LoginService {
     @FormUrlEncoded
     @POST("joinMember.mobile")
     Call<RequestResult> basicJoin(@FieldMap Map<String, String> userJoin);
+
+    @FormUrlEncoded
+    @POST("idCheck.do")
+    Call<Boolean> checkId(@Field("user_id") String id);
 }
