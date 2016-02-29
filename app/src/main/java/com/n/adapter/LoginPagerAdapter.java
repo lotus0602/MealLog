@@ -28,7 +28,6 @@ public class LoginPagerAdapter extends FragmentStatePagerAdapter{
                 fragment = new JoinFragment();
                 break;
         }
-
         return fragment;
     }
 

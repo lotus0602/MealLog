@@ -87,14 +87,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     public void onResponse(Call<RequestResult> call, Response<RequestResult> response) {
                         Log.d("Response In Login", "CODE : " + response.code());
                         dialog.dismiss();
-
-                        RequestResult result = response.body();
-                        if (result.getResult().equals("LOGIN_OK")) {
-                            Intent i = new Intent(getActivity(), MainActivity.class);
-                            startActivity(i);
-                            getActivity().finish();
-                        } else {
-                            Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
+                        if (response.isSuccess()) {
+                            RequestResult result = response.body();
+                            if (result.getResult().equals("LOGIN_OK")) {
+                                Intent i = new Intent(getActivity(), MainActivity.class);
+                                startActivity(i);
+                                getActivity().finish();
+                            } else {
+                                Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 

@@ -19,7 +19,6 @@ import com.n.fragment.ShowMyMealFragment;
 import com.n.fragment.ShowSharedMealFragment;
 import com.n.fragment.StatisticsFragment;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity
         SharedPreferencesManager.getPreferences().edit()
                 .remove(SharedPreferencesManager.PREF_COOKIES)
                 .commit();
-
         super.onDestroy();
     }
 

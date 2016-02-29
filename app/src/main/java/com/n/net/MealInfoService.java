@@ -13,7 +13,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 
 /**
  * Created by N on 2016-02-18.
@@ -29,10 +28,10 @@ public interface MealInfoService {
     @POST("meal/userOneMealList.mobile")
     Call<MealInfo> getMealDetails(@Field("IDX") int i);
 
-//    @Multipart
     @POST("meal/mealUploadList.mobile")
     Call<String> uploadMeal(@Body MultipartBody requestBody);
 
+//    @Multipart
 //    Call<String> uploadMeal(@Part("image") RequestBody image,
 //                            @Part("meal") MealInfo info);
     @FormUrlEncoded

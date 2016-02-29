@@ -17,7 +17,7 @@ public class SharedPreferencesManager {
 
     public static void createSharedPreference(Context context) {
         if (preferences == null) {
-            preferences = context.getSharedPreferences(APP_NAME, context.MODE_PRIVATE);
+            preferences = context.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
         }
     }
 

@@ -61,12 +61,12 @@ public class StatisticsRecyclerAdapter
             params.width = 300 * items.get(position).getNum() / standardNum;
         }
         holder.bar.setLayoutParams(params);
-        holder.showCountView.setText(" " + items.get(position).getNum());
+        String tmp = " " + items.get(position).getNum();
+        holder.showCountView.setText(tmp);
     }
 
     @Override
     public int getItemCount() {
         return items.size();
     }
-
 }

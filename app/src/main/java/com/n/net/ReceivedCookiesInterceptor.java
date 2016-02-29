@@ -27,7 +27,6 @@ public class ReceivedCookiesInterceptor implements Interceptor {
                     .putStringSet(SharedPreferencesManager.PREF_COOKIES, cookies)
                     .apply();
         }
-
         return originalResponse;
     }
 }

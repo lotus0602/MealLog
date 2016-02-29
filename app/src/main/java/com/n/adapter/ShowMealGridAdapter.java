@@ -78,7 +78,7 @@ public class ShowMealGridAdapter extends BaseAdapter{
         TextView title;
     }
 
-    public void setInfos(ArrayList mealInfos) {
+    public void setInfos(ArrayList<MealInfo> mealInfos) {
         infos = mealInfos;
         Log.d("In setInfos!!!!!", "SIZE : " + infos.size());
     }

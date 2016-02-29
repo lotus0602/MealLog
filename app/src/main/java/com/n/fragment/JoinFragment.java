@@ -31,7 +31,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JoinFragment extends Fragment implements View.OnClickListener{
+public class JoinFragment extends Fragment implements View.OnClickListener, TextWatcher {
     private Button complete;
     private EditText id;
     private EditText email;
@@ -41,6 +41,9 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
     private TextInputLayout id_label;
     private ProgressDialog dialog;
     private LoginService loginService;
+
+    private int count = 0;
+    private boolean isEmpty = true;
 
     public JoinFragment() {
         // Required empty public constructor
@@ -64,6 +67,11 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
         complete.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
+        id.addTextChangedListener(this);
+        email.addTextChangedListener(this);
+        pw.addTextChangedListener(this);
+        pw_again.addTextChangedListener(this);
+
         return v;
     }
 
@@ -74,8 +82,6 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
         loginService = ServiceGenerator.createService(LoginService.class);
         dialog = new ProgressDialog(getContext());
         complete.setEnabled(false);
-
-        checkDuplicateId();
     }
 
     @Override
@@ -96,11 +102,13 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
                     public void onResponse(Call<RequestResult> call, Response<RequestResult> response) {
                         Log.d("Response In Join", "CODE : " + response.code());
 
-                        RequestResult result = response.body();
-                        if (result.getResult().equals("JOIN_OK")) {
-                            pager.setCurrentItem(0);
-                        } else {
-                            Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
+                        if (response.isSuccess()) {
+                            RequestResult result = response.body();
+                            if (result.getResult().equals("JOIN_OK")) {
+                                pager.setCurrentItem(0);
+                            } else {
+                                Toast.makeText(getContext(), result.getResult(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
@@ -117,45 +125,60 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void checkDuplicateId() {
-        id.addTextChangedListener(new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        isEmpty = (s.length() == 0);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (isEmpty && s.length() > 0) { count++; }
+        else if (!isEmpty && s.length() == 0) { count--; }
+
+        if (s == id.getEditableText()) {
+            checkDuplicateId(s.toString());
+        }
+    }
+
+    private boolean isReadyToSend() {
+        boolean isReadyToSend;
+        isReadyToSend = (count == 4);
+        return isReadyToSend;
+    }
+
+    private void checkDuplicateId(String s) {
+        Call<Boolean> call = loginService.checkId(s);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.show();
+
+        call.enqueue(new Callback<Boolean>() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                Log.d("Response In Check Id", "CODE : " + response.code());
+                if (response.isSuccess()) {
+                    boolean isDuplicate = response.body();
+
+                    if (isDuplicate) {
+                        id_label.setError("Duplicated ID");
+                        id_label.setErrorEnabled(true);
+                        complete.setEnabled(false);
+                    } else {
+                        if (isReadyToSend())
+                            complete.setEnabled(true);
+                    }
+                }
+                dialog.dismiss();
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Call<Boolean> call = loginService.checkId(s.toString());
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                dialog.show();
-
-                call.enqueue(new Callback<Boolean>() {
-                    @Override
-                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        if (response.isSuccess()) {
-                            boolean isDuplicate = response.body();
-
-                            if (isDuplicate) {
-                                id_label.setError("Duplicated ID");
-                                id_label.setErrorEnabled(true);
-                                complete.setEnabled(false);
-                            } else {
-                                complete.setEnabled(true);
-                            }
-                        }
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Boolean> call, Throwable t) {
-                        Log.e("In Check Id", t.getMessage());
-                        dialog.dismiss();
-                    }
-                });
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("Failure In Check Id", t.getMessage());
+                dialog.dismiss();
             }
         });
     }
