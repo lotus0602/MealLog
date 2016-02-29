@@ -21,7 +21,6 @@ import com.n.net.LoginService;
 import com.n.net.ServiceGenerator;
 import com.n.view.LockableViewPager;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +84,7 @@ public class JoinFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId()) {
             case R.id.join_complete:
-                Map userJoin = new HashMap();
+                Map<String, String> userJoin = new HashMap<>();
                 userJoin.put("signUp_userID", id.getText().toString());
                 userJoin.put("signUp_userMail", email.getText().toString());
                 userJoin.put("signUp_psw", pw.getText().toString());

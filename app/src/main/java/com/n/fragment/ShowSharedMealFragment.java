@@ -74,14 +74,14 @@ public class ShowSharedMealFragment extends Fragment {
                 mealList = response.body();
                 for (MealInfo mealInfo : mealList.getInfos()) {
 
-                    Log.d("In Response", "Idx : " + mealInfo.getIdx()
-                            + ", Username : " + mealInfo.getUsername()
-                            + ", Name : " + mealInfo.getName()
-                            + ", Category : " + mealInfo.getCategory()
-                            + ", Content : " + mealInfo.getContent()
-                            + ", Eatdate : " + mealInfo.getEatdate()
-                            + ", Wheneat : " + mealInfo.getWheneat()
-                            + ", Picpath : " + mealInfo.getPicpath()
+                    Log.d("In Response", "Idx : " + mealInfo.getIndex()
+                            + ", Username : " + mealInfo.getId()
+                            + ", Name : " + mealInfo.getTitle()
+                            + ", Category : " + mealInfo.getFoodCategory()
+                            + ", Content : " + mealInfo.getContents()
+                            + ", Eatdate : " + mealInfo.getDate()
+                            + ", Wheneat : " + mealInfo.getMealTime()
+                            + ", Picpath : " + mealInfo.getImagePath()
                             + ", Share : " + mealInfo.isShare());
                 }
 

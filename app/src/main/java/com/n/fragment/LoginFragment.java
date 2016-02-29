@@ -77,7 +77,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 LoginService loginService =
                         ServiceGenerator.createService(LoginService.class);
 
-                Map user = new HashMap();
+                Map<String, String> user = new HashMap<>();
                 user.put("userID", id.getText().toString());
                 user.put("userPW", pw.getText().toString());
 

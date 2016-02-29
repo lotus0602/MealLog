@@ -1,14 +1,17 @@
 package com.n.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.n.adapter.ShowMealGridAdapter;
+import com.n.meallog.MealDetailActivity;
 import com.n.meallog.R;
 import com.n.model.MealInfo;
 import com.n.model.MealList;
@@ -23,6 +26,8 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class ShowMyMealFragment extends Fragment {
+    public static final String MEAL_INFO = "meal info";
+    public static final String MEAL_INDEX = "meal index";
     private MealList mealList;
     private GridView gridView;
     private ShowMealGridAdapter gridAdapter;
@@ -51,6 +56,16 @@ public class ShowMyMealFragment extends Fragment {
         getMyMealList();
         Log.d("After getMyMealList!!!!", "SIZE : " + mealList.getInfos().size());
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), MealDetailActivity.class);
+                MealInfo info = (MealInfo)parent.getItemAtPosition(position);
+                intent.putExtra(MEAL_INFO, info);
+                intent.putExtra(MEAL_INDEX, info.getIndex());
+                startActivity(intent);
+            }
+        });
     }
 
     private void getMyMealList(){
@@ -64,14 +79,14 @@ public class ShowMyMealFragment extends Fragment {
                 mealList = response.body();
                 for (MealInfo mealInfo : mealList.getInfos()) {
 
-                    Log.d("In Response", "Idx : " + mealInfo.getIdx()
-                            + ", Username : " + mealInfo.getUsername()
-                            + ", Name : " + mealInfo.getName()
-                            + ", Category : " + mealInfo.getCategory()
-                            + ", Content : " + mealInfo.getContent()
-                            + ", Eatdate : " + mealInfo.getEatdate()
-                            + ", Wheneat : " + mealInfo.getWheneat()
-                            + ", Picpath : " + mealInfo.getPicpath()
+                    Log.d("In Response", "Idx : " + mealInfo.getIndex()
+                            + ", Username : " + mealInfo.getId()
+                            + ", Name : " + mealInfo.getTitle()
+                            + ", Category : " + mealInfo.getFoodCategory()
+                            + ", Content : " + mealInfo.getContents()
+                            + ", Eatdate : " + mealInfo.getDate()
+                            + ", Wheneat : " + mealInfo.getMealTime()
+                            + ", Picpath : " + mealInfo.getImagePath()
                             + ", Share : " + mealInfo.isShare());
                 }
 

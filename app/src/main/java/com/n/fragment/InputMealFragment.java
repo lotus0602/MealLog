@@ -34,7 +34,6 @@ import com.n.net.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.Calendar;
 
 import okhttp3.Headers;
@@ -121,14 +120,14 @@ public class InputMealFragment extends Fragment {
                         categorySpinner.getSelectedItem().toString(),
                         contents.getText().toString(),
                         share.isChecked());
-                Log.d("Upload!!!", "Idx : " + info.getIdx()
-                        + ", Username : " + info.getUsername()
-                        + ", Name : " + info.getName()
-                        + ", Category : " + info.getCategory()
-                        + ", Content : " + info.getContent()
-                        + ", Eatdate : " + info.getEatdate()
-                        + ", Wheneat : " + info.getWheneat()
-                        + ", Picpath : " + info.getPicpath()
+                Log.d("Upload!!!", "Idx : " + info.getIndex()
+                        + ", Username : " + info.getId()
+                        + ", Name : " + info.getTitle()
+                        + ", Category : " + info.getFoodCategory()
+                        + ", Content : " + info.getContents()
+                        + ", Eatdate : " + info.getDate()
+                        + ", Wheneat : " + info.getMealTime()
+                        + ", Picpath : " + info.getImagePath()
                         + ", Share : " + info.isShare());
 
                 File file = new File(getRealPathFromUri(photoUri));

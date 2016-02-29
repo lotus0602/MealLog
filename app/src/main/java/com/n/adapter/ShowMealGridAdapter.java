@@ -61,14 +61,14 @@ public class ShowMealGridAdapter extends BaseAdapter{
         }
 
         Picasso.with(context)
-                .load(ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getPicpath())
+                .load(ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getImagePath())
                 .fit()
                 .centerCrop()
                 .into(viewHolder.thumbnail);
-        viewHolder.title.setText(infos.get(position).getName());
+        viewHolder.title.setText(infos.get(position).getTitle());
 
         Log.d("IN getView!!!!!", position + " : "
-                + ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getPicpath());
+                + ServiceGenerator.API_BASE_URL + "meal/" + infos.get(position).getImagePath());
 
         return convertView;
     }
